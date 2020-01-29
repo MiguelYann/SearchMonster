@@ -1,46 +1,39 @@
-import React, { Component } from "react";
-import logo from "./logo.svg";
+import React, {Component} from "react";
 import "./App.css";
+import {CardList} from "./components/card-list/card-list.component";
+import {Search} from "./components/search/Search.component";
 
 class App extends Component {
-  constructor() {
-    super();
-    this.state = {
-      players: [
-        {
-          name: "Stephen Curry"
-        },
-
-        {
-          name: "Kevin Durant"
-        },
-
-        {
-          name: "Damian Lillard"
-        },
-
-        {
-          name: "Anthony Davis"
-        },
-
-        {
-          name: "Gianis Antetokumpo"
-        }
-      ]
-    };
-  }
-
-  render() {
-    return (
-      <div className="App">
-        <ul>
-          {this.state.players.map(player => (
-            <li>{player.name}</li>
-          ))}
-        </ul>
-      </div>
-    );
-  }
+    constructor (props) {
+        super(props);
+        this.state = {
+            monsters: [],
+            searchInput: ''
+            
+        };
+    }
+    
+    componentDidMount () {
+        fetch('https://jsonplaceholder.typicode.com/users')
+            .then(response => response.json())
+            .then(jsonUsers => this.setState({monsters: jsonUsers}))
+    }
+    
+    handleChange = (e) => this.setState({searchInput: e.target.value})
+    
+    render () {
+        const {monsters, searchInput} = this.state;
+        const monsterSelected = monsters.filter(monster => monster.name.toLowerCase().includes(searchInput.toLowerCase()));
+        return (
+            <div className="App">
+                <Search
+                    placeHolder={'enter monster name'}
+                    changeHandler={this.handleChange}
+                />
+                <CardList monsters={monsterSelected}/>
+            </div>
+        );
+    }
 }
 
 export default App;
