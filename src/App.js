@@ -26,6 +26,7 @@ class App extends Component {
         const monsterSelected = monsters.filter(monster => monster.name.toLowerCase().includes(searchInput.toLowerCase()));
         return (
             <div className="App">
+                <h3>Monster Search</h3>
                 <Search
                     placeHolder={'enter monster name'}
                     changeHandler={this.handleChange}
